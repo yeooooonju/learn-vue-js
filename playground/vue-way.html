@@ -11,25 +11,42 @@
     </div>
 
     <script>
-        var div = document.querySelector('#app');
-        
+        var div = document.querySelector('#app');        
         var viewModel = {};
 
-//        Object.defineProperty(대상 객체, 객체의 속성, {
-//            // 객체 동작을 재정의            
-//        });  
-
-        Object.defineProperty(viewModel, 'str', {
-            // 속성에 접근했을 때의 동작을 정의
-            get: function() {
-                console.log('접근');
-            },
-            // 속성에 값을 할당했을 때의 동작을 정의
-            set: function(newValue) {
-                console.log('할당', newValue);   
-                div.innerHTML = newValue; 
+        // 즉시 실행 함수 (init과 render가 어플리케이션에 노출되지 않게)
+        (function() {
+            function init() {
+                Object.defineProperty(viewModel, 'str', {
+                    // 속성에 접근했을 때의 동작을 정의
+                    get: function() {
+                        console.log('접근');
+                    },
+                    // 속성에 값을 할당했을 때의 동작을 정의
+                    set: function(newValue) {
+                        console.log('할당', newValue);   
+                        render(newValue);
+                    }
+                });
             }
-        });
-    </script>
+
+            function render(value) {
+                div.innerHTML = value; 
+            }
+
+            init();
+        })();
+
+    // Object.defineProperty(대상 객체, 객체의 속성, {
+    //   객체 동작을 재정의     
+    //   - 속성에 접근했을 때, 속성에 값을 할당했을 떄        
+    // });  
+
+    // view의 핵심은 Reactivity 
+    // 데이터의 변화를 라이브러리에서 감지하여 알아서 화면을 자동으로 그려주는 것 
+   
+   </script>
+
+    
 </body>
 </html>
